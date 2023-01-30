@@ -1,26 +1,33 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { useRef } from 'react';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
-}
+const App: React.FC = () => {
+    const unityRef = useRef<HTMLDivElement>(null);
+
+    const handleButtonClick = () => {
+        if (unityRef.current) {
+            unityRef.current.contentWindow.postMessage({
+                type: 'buttonClick'
+            }, '*');
+        }
+    };
+
+    return (
+        <div>
+            <button onClick={handleButtonClick}>Click me</button>
+            <div
+                ref={unityRef}
+                style={{ width: '100%', height: '100%' }}
+            >
+                <iframe
+                    src="./Build/index.html"
+                    frameBorder="0"
+                    width="100%"
+                    height="100%"
+                    allowFullScreen
+                />
+            </div>
+        </div>
+    );
+};
 
 export default App;
